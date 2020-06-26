@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>OCMOD Editor Modification</name> 
+  <code>ocmodeditor</code>
+  <version>1.02</version>
+  <author>Dmitriy Krotkov</author>
+  <link></link>
+ 
+<file path="admin/view/template/extension/modification.tpl">
+  <operation>
+    <search trim="true"><![CDATA[
+      <?php if (!$modification['enabled']) { ?>
+    ]]></search>
+    <add position="before"><![CDATA[
+      <a class="btn btn-warning" href="<?php echo $modification['ocmod_edit']; ?>" title="<?php echo $text_ocmod_edit; ?>"><i class="fa fa-pencil"></i></a>
+    ]]></add>
+  </operation>
+</file>
+
+<file path="admin/controller/extension/modification.php">
+  <operation>
+    <search trim="true"><![CDATA[
+      'disable'         => $this->url->link('extension/modification/disable', 'token=' . $this->session->data['token'] . '&modification_id=' . $result['modification_id'], true),
+    ]]></search>
+    <add position="after"><![CDATA[
+      'ocmod_edit' => $this->url->link('extension/ocmodeditor', 'token=' . $this->session->data['token'] . '&id=' . $result['modification_id'], true),
+    ]]></add>
+  </operation>
+
+  <operation>
+    <search trim="true"><![CDATA[
+     $data['text_refresh'] = $this->language->get('text_refresh');
+    ]]></search>
+    <add position="after"><![CDATA[
+     $this->load->language('extension/ocmodeditor');
+     $data['text_ocmod_edit'] = $this->language->get('text_ocmod_edit');
+    ]]></add>
+  </operation>
+</file>
+
+</modification>
